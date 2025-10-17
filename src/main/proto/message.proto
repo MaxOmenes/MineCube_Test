@@ -1,0 +1,9 @@
+syntax = "proto3";
+package test;
+
+option java_package = "test.network";
+option java_outer_classname = "ProtoMessages";
+
+message Message {
+  string text = 1;
+}
