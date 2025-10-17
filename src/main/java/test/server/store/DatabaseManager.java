@@ -7,12 +7,20 @@ import jakarta.persistence.Persistence;
 public class DatabaseManager {
     private static EntityManagerFactory entityManagerFactory;
 
-    public static void initialize() {
+    private DatabaseManager() {
+    }
+
+    private static void initialize() {
         if (entityManagerFactory == null) {
             entityManagerFactory = Persistence.createEntityManagerFactory("MinecubePU");
         }
     }
 
+    /**
+     * Get a new EntityManager instance.
+     * Lazy initialization of EntityManagerFactory.
+     * @return EntityManager instance
+     */
     public static EntityManager getEntityManager() {
         if (entityManagerFactory == null) {
             initialize();

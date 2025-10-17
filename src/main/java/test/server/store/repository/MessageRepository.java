@@ -6,6 +6,23 @@ import test.server.store.entity.Message;
 
 public class MessageRepository  {
 
+    private static MessageRepository instance;
+
+    private MessageRepository() {
+    }
+
+    /**
+     * Get the singleton instance of MessageRepository.
+     * Lazy initialization.
+     * @return MessageRepository instance
+     */
+    public static MessageRepository getInstance() {
+        if (instance == null) {
+            instance = new MessageRepository();
+        }
+        return instance;
+    }
+
     public void save(Message message){
         EntityManager em = DatabaseManager.getEntityManager();
         try {

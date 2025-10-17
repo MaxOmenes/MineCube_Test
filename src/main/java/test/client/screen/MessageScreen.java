@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +24,10 @@ public class MessageScreen extends Screen {
     private final int textFieldHeight = 20;
     private final int textFieldWidth = 200;
 
-    public static final ResourceLocation MESSAGE_PACKET_ID = ResourceLocation.fromNamespaceAndPath("minecube", "message");
+    private static final ResourceLocation MESSAGE_PACKET_ID = ResourceLocation.fromNamespaceAndPath("minecube", "message");
+    private final Minecraft minecraft = Minecraft.getInstance();
+    private final ToastManager toastManager = minecraft.getToastManager();
+
 
     public MessageScreen() {
         super(Component.literal("Message Screen"));
@@ -36,12 +40,13 @@ public class MessageScreen extends Screen {
                 textFieldWidth, textFieldHeight,
                 Component.literal("Type here"));
         sendButton = Button.builder(Component.literal("Send Message"), (btn) -> {
-                    Minecraft.getInstance().getToastManager().addToast(SystemToast.multiline(
-                            Minecraft.getInstance(),
+                    toastManager.addToast(SystemToast.multiline(
+                            minecraft,
                             SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
                             Component.literal("Message sent!"),
                             Component.literal("Thank you for using this mod!")
                     ));
+
                     ProtoMessages.Message message = ProtoMessages.Message.newBuilder()
                             .setText(textField.getValue())
                             .build();
